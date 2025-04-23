@@ -23,14 +23,12 @@ pipeline {
                 bat 'java -cp target/classes jenkins_learning.Test 42'
             }
         }
-
-        post {
-    success {
-        archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
     }
+     post {
+        success {
+            echo '🎉 Build Successful!'
+            archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+        }
 }
 
-    }
 }
-
-
