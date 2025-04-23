@@ -10,6 +10,7 @@ public class Test {
 		          int maxAttempts = 7;
 
 		          System.out.println("🎲 Welcome to Auto Guess the Number Game!");
+		          System.out.println("It will be fun!");
 		          System.out.println("I'm thinking of a number between 1 and 100.");
 		          System.out.println("You have " + maxAttempts + " attempts. Good luck!");
 
