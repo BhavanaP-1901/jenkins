@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven 3.9.9' // Ensure this is correctly configured in Jenkins global tool config
+        maven 'Maven 3.9.9' // Make sure this is configured in Global Tool Configuration
     }
 
     stages {
@@ -14,13 +14,13 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'mvn clean install'
+                bat 'mvn clean install'
             }
         }
 
         stage('Run') {
             steps {
-                sh 'java -cp target/classes jenkins_learning.Test'
+                bat 'java -cp target/classes jenkins_learning.Test'
             }
         }
     }
