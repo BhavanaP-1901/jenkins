@@ -5,43 +5,33 @@ import java.util.Scanner;
 public class Test {
 
 	public static void main(String[] args) {
-		  Scanner scanner = new Scanner(System.in);
-	        Random random = new Random();
-	        int target = random.nextInt(100) + 1; // Random number between 1 and 100
-	        int attempts = 0;
-	        int maxAttempts = 7;
+	  int maxAttempts = 7;
+        int target = new Random().nextInt(100) + 1;
 
-	        System.out.println("🎲 Welcome to Guess the Number Game!");
-	        System.out.println("I'm thinking of a number between 1 and 100.");
-	        System.out.println("You have " + maxAttempts + " attempts. Good luck!");
+        System.out.println("🎲 Welcome to Guess the Number Game!");
+        System.out.println("I'm thinking of a number between 1 and 100.");
+        System.out.println("You have " + maxAttempts + " attempts. Good luck!");
 
-	        while (attempts < maxAttempts) {
-	            System.out.print("Enter your guess: ");
-	            int guess;
+        if (args.length == 0) {
+            System.out.println("⚠️ No guess provided. Please pass a number as a command-line argument.");
+            return;
+        }
 
-	            try {
-	                guess = Integer.parseInt(scanner.nextLine());
-	            } catch (NumberFormatException e) {
-	                System.out.println("⚠️ Please enter a valid number!");
-	                continue;
-	            }
+        try {
+            int guess = Integer.parseInt(args[0]);
 
-	            attempts++;
-
-	            if (guess == target) {
-	                System.out.println("🎉 Congratulations! You guessed it in " + attempts + " tries!");
-	                break;
-	            } else if (guess < target) {
-	                System.out.println("📉 Too low!");
-	            } else {
-	                System.out.println("📈 Too high!");
-	            }
-
-	            if (attempts == maxAttempts) {
-	                System.out.println("❌ Out of attempts! The number was: " + target);
-	            }
-	        }
-
-	}
+            if (guess == target) {
+                System.out.println("🎉 Congratulations! You guessed it right!");
+            } else if (guess < target) {
+                System.out.println("📉 Too low! The number was: " + target);
+            } else {
+                System.out.println("📈 Too high! The number was: " + target);
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("⚠️ Invalid input. Please provide a numeric guess.");
+        }
+    }
+	
+	
 
 }
