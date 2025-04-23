@@ -20,7 +20,7 @@ pipeline {
 
         stage('Run') {
             steps {
-                bat 'java -cp target/classes jenkins_learning.Test'
+                bat 'java -cp target/classes jenkins_learning.Test 42'
             }
         }
     }
