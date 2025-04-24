@@ -25,12 +25,15 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            steps {
-                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
-                    bat "mvn sonar:sonar -Dsonar.projectKey=jenkins-project -Dsonar.projectName='Sonar' -Dsonar.login=${SONAR_TOKEN}"
-                }
+    steps {
+        withSonarQubeEnv('SonarQube') {
+            withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                bat "mvn sonar:sonar -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectKey=jenkins-project -Dsonar.projectName='Sonar' -Dsonar.host.url=http://localhost:9000"
             }
         }
+    }
+}
+
     }
 
     post {
