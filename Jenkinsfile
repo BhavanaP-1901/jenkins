@@ -2,25 +2,13 @@ pipeline {
     agent any
 
     tools {
-        maven 'Maven 3.9.9'
-    }
-
-    environment {
-        SONARQUBE_ENV = credentials('sonarqube-token-id') // optional if token injected via server config
+        maven 'Maven 3.9.9' // Make sure this is configured in Global Tool Configuration
     }
 
     stages {
         stage('Checkout') {
             steps {
                 git branch: 'main', credentialsId: 'github-creds', url: 'https://github.com/BhavanaP-1901/jenkins.git'
-            }
-        }
-
-        stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('SonarQube') {
-                    bat 'mvn clean verify sonar:sonar -Dsonar.projectKey=jenkins-project -Dsonar.projectName="Jenkins Project"'
-                }
             }
         }
 
@@ -35,6 +23,14 @@ pipeline {
                 bat 'java -cp target/classes jenkins_learning.Test 42'
             }
         }
+
+        stage('SonarQube Analysis') {
+            steps {
+                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                    bat "mvn sonar:sonar -Dsonar.projectKey=jenkins-project -Dsonar.projectName='Sonar' -Dsonar.login=${SONAR_TOKEN}"
+                }
+            }
+        }
     }
 
     post {
@@ -44,3 +40,4 @@ pipeline {
         }
     }
 }
+
