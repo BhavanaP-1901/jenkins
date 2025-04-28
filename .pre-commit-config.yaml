@@ -1,11 +1,49 @@
-- repo: https://github.com/detekt/detekt
-  rev: v1.18.1  # Latest release of detekt (static analysis tool)
-  hooks:
-    - id: detekt
+# .pre-commit-config.yaml
+repos:
+  # - repo: https://github.com/quwac/pre-commit-detekt
+  #   rev: v1.23.4
+  #   hooks:  
+  #     - id: detekt
+  #       always_run: true
+  #       args: ['--config', '/Users/rimurutempest/Desktop/Jenkins/java_project/jenkins/detekt.yml', '--input', '.'] # Use relative path
 
-- repo: https://github.com/checkstyle/checkstyle
-  rev: v8.45  # Use the latest version of checkstyle
-  hooks:
-    - id: checkstyle
-      files: \.(java)$  # Only run on Java files
+  - repo: https://github.com/rgraue/pre-commit-mirror-checkstyle
+    rev: v0.1.15
+    hooks:
+      - id: checkstyle-java
+        # Removed '-s', Removed pass_filenames: false (defaults to true)
+        args: ["-c", "google"]
+        files: \.java$
+        always_run: true
 
+  - repo: local
+    hooks:
+      - id: pmd-maven
+        name: PMD via Maven
+        entry: mvn org.apache.maven.plugins:maven-pmd-plugin:3.21.2:check
+        language: system
+        types: [java]
+        pass_filenames: false
+        always_run: true
+
+  - repo: local
+    hooks:
+      - id: spotbugs-maven
+        name: SpotBugs via Maven
+        # Use correct GAV and a valid version
+        entry: mvn com.github.spotbugs:spotbugs-maven-plugin:4.8.5.0:check
+        language: system
+        types: [java]
+        pass_filenames: false
+        always_run: true
+
+  - repo: local
+    hooks:
+      - id: jdepend-maven
+        name: JDepend via Maven
+        # Use 'check' goal if you want validation failure
+        entry: mvn org.codehaus.mojo:jdepend-maven-plugin:2.1:generate
+        language: system
+        types: [java]
+        pass_filenames: false
+        always_run: true

@@ -1,7 +1,126 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+
   <groupId>Jenkins</groupId>
   <artifactId>jenkins_learning</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>jenkins_learning</name>
+  <dependencies>
+      <!-- Add any additional dependencies here -->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+    </dependencies>
+  <properties>
+      <!-- Define versions in properties for consistency -->
+      <maven.compiler.source>11</maven.compiler.source> <!-- Or your Java version -->
+      <maven.compiler.target>11</maven.compiler.target> <!-- Or your Java version -->
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <pmd.plugin.version>3.21.2</pmd.plugin.version>
+      <spotbugs.plugin.version>4.8.5.0</spotbugs.plugin.version>
+      <jdepend.plugin.version>2.1</jdepend.plugin.version>
+      <slf4j.version>1.7.36</slf4j.version>
+      <!-- Add other plugin versions if needed -->
+  </properties>
+
+  <build>
+    <plugins>
+      <!-- PMD plugin -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>${pmd.plugin.version}</version>
+        <executions>
+          <execution>
+            <!-- Optionally bind to 'verify' phase -->
+            <!-- <phase>verify</phase> -->
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <rulesets>
+            <ruleset>pmd-ruleset.xml</ruleset>
+          </rulesets>
+          <failOnViolation>true</failOnViolation>
+          <linkXRef>false</linkXRef> <!-- Disable Xref linking if causing issues -->
+        </configuration>
+      </plugin>
+
+      <!-- SpotBugs plugin -->
+      <plugin>
+        <!-- Correct Modern GAV -->
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>${spotbugs.plugin.version}</version>
+        <executions>
+          <execution>
+            <!-- Optionally bind to 'verify' phase -->
+            <!-- <phase>verify</phase> -->
+            <goals>
+              <goal>spotbugs</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <effort>Max</effort>
+          <threshold>High</threshold>
+          <failOnError>true</failOnError>
+        </configuration>
+         <!-- Add SLF4J dependency if needed by SpotBugs -->
+         <dependencies>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+         </dependencies>
+      </plugin>
+
+      <!-- JDepend plugin -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jdepend-maven-plugin</artifactId>
+        <version>${jdepend.plugin.version}</version>
+        <executions>
+            <execution>
+                <!-- Optionally bind to 'verify' phase -->
+                <!-- <phase>verify</phase> -->
+                <goals>
+                    <!-- Use generate goal for validation -->
+                    <goal>generate</goal>
+                </goals>
+            </execution>
+        </executions>
+        <!-- Add JDepend configuration here if needed -->
+        <!-- <configuration> -->
+            <!-- e.g., define package cycles allowed -->
+        <!-- </configuration> -->
+      </plugin>
+
+      <!-- Optional: Detekt plugin (Only if using Kotlin and want Maven build to check) -->
+      <!-- If only using pre-commit for Detekt, remove this -->
+      <!--
+      <plugin>
+        <groupId>io.gitlab.arturbosch.detekt</groupId>
+        <artifactId>detekt-maven-plugin</artifactId>
+        <version>1.23.6</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <config>jenkins/detekt.yml</config>
+        </configuration>
+      </plugin>
+      -->
+    </plugins>
+    
+  </build>
 </project>

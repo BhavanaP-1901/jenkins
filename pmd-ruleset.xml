@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<ruleset name="Custom Rules"
+    xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.net/ruleset_2_0_0.xsd">
+
+    <description>
+        My custom PMD ruleset.
+    </description>
+
+    <!-- Include the base rulesets you want -->
+    <rule ref="category/java/bestpractices.xml"/>
+    <rule ref="category/java/codestyle.xml">
+         <!-- Exclude the problematic rule entirely for now -->
+         <exclude name="FieldNamingConventions"/>
+    </rule>
+    <rule ref="category/java/design.xml">
+         <exclude name="LoosePackageCoupling"/>
+         <!-- Code fixes should handle UseUtilityClass & ClassWithOnlyPrivateConstructorsShouldBeFinal -->
+    </rule>
+    <rule ref="category/java/errorprone.xml"/>
+    <rule ref="category/java/multithreading.xml"/>
+    <rule ref="category/java/performance.xml"/>
+    <rule ref="category/java/security.xml"/>
+
+    <!-- Remove the overriding rule definition for FieldNamingConventions -->
+    <!--
+    <rule name="FieldNamingConventions" ref="category/java/codestyle.xml/FieldNamingConventions">
+        ... properties ...
+   </rule>
+   -->
+
+</ruleset>
