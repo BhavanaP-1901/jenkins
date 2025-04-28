@@ -1,1 +1,11 @@
+- repo: https://github.com/detekt/detekt
+  rev: v1.18.1  # Latest release of detekt (static analysis tool)
+  hooks:
+    - id: detekt
+
+- repo: https://github.com/checkstyle/checkstyle
+  rev: v8.45  # Use the latest version of checkstyle
+  hooks:
+    - id: checkstyle
+      files: \.(java)$  # Only run on Java files
 
