@@ -36,7 +36,7 @@ pipeline {
 
         stage('Run') {
             steps {
-                bat 'java -cp target/classes jenkins_learning.NumberGuessingGame'
+                bat 'java -cp target/classes;path/to/slf4j-api.jar;path/to/other-needed.jar jenkins_learning.NumberGuessingGame'
             }
         }
 
