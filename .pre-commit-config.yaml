@@ -1,13 +1,25 @@
+# .pre-commit-config.yaml
 repos:
-  # - repo: local
+  # Commented out the old Checkstyle hook
+  # - repo: https://github.com/rgraue/pre-commit-mirror-checkstyle
+  #   rev: v0.1.15
   #   hooks:
-  #     - id: checkstyle
-  #       name: Checkstyle Java
-  #       entry: mvn com.puppycrawl.tools:checkstyle:checkstyle
-  #       language: system
-  #       types: [java]
-  #       pass_filenames: false
+  #     - id: checkstyle-java
+  #       args: ["-c", "google"]
+  #       files: \.java$
   #       always_run: true
+
+  # Added local hook for Checkstyle via Maven
+  - repo: local
+    hooks:
+      - id: checkstyle-maven
+        name: Checkstyle via Maven
+        # Note: Maven resolves the plugin version from the POM
+        entry: mvn org.apache.maven.plugins:maven-checkstyle-plugin:check
+        language: system
+        types: [java]
+        pass_filenames: false
+        always_run: true
 
   - repo: local
     hooks:
@@ -23,6 +35,7 @@ repos:
     hooks:
       - id: spotbugs-maven
         name: SpotBugs via Maven
+        # Use correct GAV and a valid version
         entry: mvn com.github.spotbugs:spotbugs-maven-plugin:4.8.5.0:check
         language: system
         types: [java]
@@ -33,9 +46,9 @@ repos:
     hooks:
       - id: jdepend-maven
         name: JDepend via Maven
+        # Use 'generate' goal as 'check' doesn't exist for this plugin
         entry: mvn org.codehaus.mojo:jdepend-maven-plugin:2.1:generate
         language: system
         types: [java]
         pass_filenames: false
         always_run: true
-
