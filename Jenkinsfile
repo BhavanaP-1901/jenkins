@@ -36,9 +36,10 @@ pipeline {
 
         stage('Run') {
             steps {
-                bat 'java -cp target/classes;path/to/slf4j-api.jar;path/to/other-needed.jar jenkins_learning.NumberGuessingGame'
+               bat "mvn exec:java -Dexec.mainClass=jenkins_learning.NumberGuessingGame"
             }
         }
+
 
         stage('SonarQube Analysis') {
             steps {
