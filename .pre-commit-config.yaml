@@ -1,13 +1,13 @@
 repos:
-- repo: local
-  hooks:
-    - id: checkstyle
-      name: Checkstyle Java
-      entry: mvn com.puppycrawl.tools:checkstyle:checkstyle
-      language: system
-      types: [java]
-      pass_filenames: false
-      always_run: true
+  - repo: local
+    hooks:
+      - id: checkstyle
+        name: Checkstyle Java
+        entry: mvn com.puppycrawl.tools:checkstyle:checkstyle
+        language: system
+        types: [java]
+        pass_filenames: false
+        always_run: true
 
   - repo: local
     hooks:
@@ -38,3 +38,4 @@ repos:
         types: [java]
         pass_filenames: false
         always_run: true
+
