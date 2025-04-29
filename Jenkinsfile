@@ -36,7 +36,7 @@ pipeline {
 
         stage('Run') {
             steps {
-                bat 'java -cp target/classes jenkins_learning.NumberGuessingGame 42'
+                bat 'java -cp target/classes jenkins_learning.NumberGuessingGame'
             }
         }
 
