@@ -79,6 +79,15 @@
             </dependency>
          </dependencies>
       </plugin>
+      <plugin>
+               <groupId>org.codehaus.mojo</groupId>
+               <artifactId>exec-maven-plugin</artifactId>
+               <version>3.1.0</version>
+               <configuration>
+                   <mainClass>jenkins_learning.NumberGuessingGame</mainClass>
+               </configuration>
+      </plugin>
+
 
       <!-- JDepend plugin -->
       <plugin>
