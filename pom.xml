@@ -5,14 +5,7 @@
   <artifactId>jenkins_learning</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>jenkins_learning</name>
-  <dependencies>
-      <!-- Add any additional dependencies here -->
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-api</artifactId>
-        <version>${slf4j.version}</version>
-      </dependency>
-    </dependencies>
+
   <properties>
       <!-- Define versions in properties for consistency -->
       <maven.compiler.source>11</maven.compiler.source> <!-- Or your Java version -->
@@ -22,8 +15,20 @@
       <spotbugs.plugin.version>4.8.5.0</spotbugs.plugin.version>
       <jdepend.plugin.version>2.1</jdepend.plugin.version>
       <slf4j.version>1.7.36</slf4j.version>
-      <!-- Add other plugin versions if needed -->
+      <!-- Added Checkstyle versions -->
+      <checkstyle.plugin.version>3.3.1</checkstyle.plugin.version>
+      <checkstyle.version>10.16.0</checkstyle.version> <!-- Use a recent Checkstyle version -->
+      <checkstyle.config.location>google_checks.xml</checkstyle.config.location> <!-- Using Google checks built-in -->
   </properties>
+
+  <dependencies>
+      <!-- Add any additional dependencies here -->
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf4j.version}</version>
+      </dependency>
+    </dependencies>
 
   <build>
     <plugins>
@@ -34,8 +39,6 @@
         <version>${pmd.plugin.version}</version>
         <executions>
           <execution>
-            <!-- Optionally bind to 'verify' phase -->
-            <!-- <phase>verify</phase> -->
             <goals>
               <goal>check</goal>
             </goals>
@@ -46,22 +49,20 @@
             <ruleset>pmd-ruleset.xml</ruleset>
           </rulesets>
           <failOnViolation>true</failOnViolation>
-          <linkXRef>false</linkXRef> <!-- Disable Xref linking if causing issues -->
+          <linkXRef>false</linkXRef>
         </configuration>
       </plugin>
 
       <!-- SpotBugs plugin -->
       <plugin>
-        <!-- Correct Modern GAV -->
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
         <version>${spotbugs.plugin.version}</version>
         <executions>
           <execution>
-            <!-- Optionally bind to 'verify' phase -->
-            <!-- <phase>verify</phase> -->
+            <!-- Changed goal to 'check' to align with pre-commit hook -->
             <goals>
-              <goal>spotbugs</goal>
+              <goal>check</goal>
             </goals>
           </execution>
         </executions>
@@ -70,7 +71,6 @@
           <threshold>High</threshold>
           <failOnError>true</failOnError>
         </configuration>
-         <!-- Add SLF4J dependency if needed by SpotBugs -->
          <dependencies>
             <dependency>
                 <groupId>org.slf4j</groupId>
@@ -79,15 +79,6 @@
             </dependency>
          </dependencies>
       </plugin>
-      <plugin>
-               <groupId>org.codehaus.mojo</groupId>
-               <artifactId>exec-maven-plugin</artifactId>
-               <version>3.1.0</version>
-               <configuration>
-                   <mainClass>jenkins_learning.NumberGuessingGame</mainClass>
-               </configuration>
-      </plugin>
-
 
       <!-- JDepend plugin -->
       <plugin>
@@ -96,40 +87,46 @@
         <version>${jdepend.plugin.version}</version>
         <executions>
             <execution>
-                <!-- Optionally bind to 'verify' phase -->
-                <!-- <phase>verify</phase> -->
                 <goals>
-                    <!-- Use generate goal for validation -->
                     <goal>generate</goal>
                 </goals>
             </execution>
         </executions>
-        <!-- Add JDepend configuration here if needed -->
-        <!-- <configuration> -->
-            <!-- e.g., define package cycles allowed -->
-        <!-- </configuration> -->
       </plugin>
 
-      <!-- Optional: Detekt plugin (Only if using Kotlin and want Maven build to check) -->
-      <!-- If only using pre-commit for Detekt, remove this -->
-      <!--
+      <!-- Added Checkstyle plugin -->
       <plugin>
-        <groupId>io.gitlab.arturbosch.detekt</groupId>
-        <artifactId>detekt-maven-plugin</artifactId>
-        <version>1.23.6</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>check</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <config>jenkins/detekt.yml</config>
-        </configuration>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+          <version>${checkstyle.plugin.version}</version>
+          <dependencies>
+              <!-- Define the Checkstyle library version -->
+              <dependency>
+                  <groupId>com.puppycrawl.tools</groupId>
+                  <artifactId>checkstyle</artifactId>
+                  <version>${checkstyle.version}</version>
+              </dependency>
+          </dependencies>
+          <configuration>
+              <!-- Location of the Checkstyle configuration file -->
+              <configLocation>${checkstyle.config.location}</configLocation>
+              <encoding>UTF-8</encoding>
+              <consoleOutput>true</consoleOutput>
+              <failsOnError>true</failsOnError> <!-- Fail build on violation -->
+              <linkXRef>false</linkXRef>
+          </configuration>
+          <executions>
+              <execution>
+                  <id>validate</id>
+                  <!-- Optionally bind to 'verify' phase for standard builds -->
+                  <!-- <phase>verify</phase> -->
+                  <goals>
+                      <goal>check</goal> <!-- Goal to run checks -->
+                  </goals>
+              </execution>
+          </executions>
       </plugin>
-      -->
+
     </plugins>
-    
   </build>
 </project>
