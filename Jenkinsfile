@@ -13,20 +13,20 @@ pipeline {
         }
 
         stage('Run Pre-Commit Hooks') {
-            steps {
-                script {
-                    // Install pre-commit if not already installed (use pip or any package manager)
-                    sh '''
-                    if ! command -v pre-commit &> /dev/null; then
-                        echo "pre-commit not found, installing..."
-                        pip install pre-commit
-                    fi
-                    '''
-                    // Run pre-commit hooks
-                    sh 'pre-commit run --all-files'
-                }
-            }
+    steps {
+        script {
+            bat '''
+            where pre-commit >nul 2>nul
+            if errorlevel 1 (
+                echo pre-commit not found, installing...
+                pip install pre-commit
+            )
+            pre-commit run --all-files
+            '''
         }
+    }
+}
+
 
         stage('Build') {
             steps {
