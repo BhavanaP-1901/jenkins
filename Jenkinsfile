@@ -12,11 +12,13 @@ pipeline {
             }
         }
     
-        // stage('Test CMD') {
-        //     steps {
-        //         bat 'echo Hello from CMD'
-        //     }
-        // }
+       stage('Debug CMD') {
+           steps {
+              bat 'echo %PATH%'
+              bat 'where cmd'
+           }
+       }
+
 
        stage('Run Pre-Commit Hooks') {
            steps {
