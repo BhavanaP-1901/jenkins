@@ -12,11 +12,11 @@ pipeline {
             }
         }
     
-        stage('Test CMD') {
-            steps {
-                bat 'echo Hello from CMD'
-            }
-        }
+        // stage('Test CMD') {
+        //     steps {
+        //         bat 'echo Hello from CMD'
+        //     }
+        // }
 
         stage('Run Pre-Commit Hooks') {
             steps {
