@@ -18,18 +18,21 @@ pipeline {
         //     }
         // }
 
-        stage('Run Pre-Commit Hooks') {
-            steps {
-                bat '''
-                call where pre-commit
-                if %ERRORLEVEL% NEQ 0 (
-                    echo pre-commit not found, installing...
-                    pip install pre-commit
-                )
-                pre-commit run --all-files
-                '''
-            }
+       stage('Run Pre-Commit Hooks') {
+           steps {
+              script {
+                  bat 'C:\\Windows\\System32\\cmd.exe /c where pre-commit >nul 2>nul'
+                  bat '''
+                  if errorlevel 1 (
+                     echo pre-commit not found, installing...
+                     pip install pre-commit
+                 )
+                 pre-commit run --all-files
+                 '''
+              }
+           }
         }
+
 
         stage('Build') {
             steps {
