@@ -22,18 +22,15 @@ pipeline {
 
        stage('Run Pre-Commit Hooks') {
            steps {
-              script {
-                  bat 'C:\\Windows\\System32\\cmd.exe /c where pre-commit >nul 2>nul'
-                  bat '''
-                  if errorlevel 1 (
-                     echo pre-commit not found, installing...
-                     pip install pre-commit
-                 )
-                 pre-commit run --all-files
-                 '''
+              withEnv(["PATH=C:\\Program Files\\Git\\bin;${env.PATH}"]) {
+                  dir('Guess_Number') {
+                      bat 'where git'
+                      bat 'git --version'
+                      bat 'pre-commit run --all-files'
+                  }
               }
-           }
-        }
+          }
+       }
 
 
         stage('Build') {
