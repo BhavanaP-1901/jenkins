@@ -13,20 +13,17 @@ pipeline {
         }
 
         stage('Run Pre-Commit Hooks') {
-    steps {
-        script {
-            bat '''
-            where pre-commit >nul 2>nul
-            if errorlevel 1 (
-                echo pre-commit not found, installing...
-                pip install pre-commit
-            )
-            pre-commit run --all-files
-            '''
+            steps {
+                bat '''
+                call where pre-commit
+                if %ERRORLEVEL% NEQ 0 (
+                    echo pre-commit not found, installing...
+                    pip install pre-commit
+                )
+                pre-commit run --all-files
+                '''
+            }
         }
-    }
-}
-
 
         stage('Build') {
             steps {
@@ -36,16 +33,15 @@ pipeline {
 
         stage('Run') {
             steps {
-               bat "mvn exec:java -Dexec.mainClass=jenkins_learning.NumberGuessingGame"
+               bat 'mvn exec:java -Dexec.mainClass=jenkins_learning.NumberGuessingGame'
             }
         }
-
 
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
                     withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
-                        bat "mvn sonar:sonar -Dsonar.login=${SONAR_TOKEN} -Dsonar.projectKey=jenkins-project -Dsonar.projectName='Sonar' -Dsonar.host.url=http://localhost:9000"
+                        bat "mvn sonar:sonar -Dsonar.login=%SONAR_TOKEN% -Dsonar.projectKey=jenkins-project -Dsonar.projectName='Sonar' -Dsonar.host.url=http://localhost:9000"
                     }
                 }
             }
