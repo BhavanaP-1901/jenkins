@@ -11,6 +11,12 @@ pipeline {
                 git branch: 'main', credentialsId: 'github-creds', url: 'https://github.com/BhavanaP-1901/jenkins.git'
             }
         }
+    
+        stage('Test CMD') {
+            steps {
+                bat 'echo Hello from CMD'
+            }
+        }
 
         stage('Run Pre-Commit Hooks') {
             steps {
